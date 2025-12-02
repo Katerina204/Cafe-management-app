@@ -20,6 +20,7 @@ jobs:
 
       - name: Build and Push Docker image
         run: |
+          # Убедись, что репозиторий в DockerHub создан и он Private
           IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/cafe-app"
           TAG="${{ github.sha }}"
           docker build -t "$IMAGE:$TAG" -t "$IMAGE:latest" .
@@ -30,10 +31,12 @@ jobs:
         env:
           KUBECONFIG: /etc/kubernetes/admin.conf
         run: |
+          # Создаем namespace, если нет
           kubectl create namespace cafe --dry-run=client -o yaml | kubectl apply -f -
 
+          # Создаем секрет для доступа к Docker Registry (regcred)
+          # Если он есть - удаляем и пересоздаем, чтобы ключи были свежими
           kubectl delete secret regcred --namespace cafe --ignore-not-found
-
           kubectl create secret docker-registry regcred --namespace cafe \
             --docker-server=https://index.docker.io/v1/ \
             --docker-username=${{ secrets.DOCKERHUB_USERNAME }} \
@@ -44,6 +47,7 @@ jobs:
         env:
           KUBECONFIG: /etc/kubernetes/admin.conf
         run: |
+          # Деплоим релиз с именем "cafe-release"
           helm upgrade --install cafe-release ./charts/cafe \
             --namespace cafe \
             --set django.image.repository="${{ secrets.DOCKERHUB_USERNAME }}/cafe-app" \
