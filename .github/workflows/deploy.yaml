@@ -3,6 +3,8 @@ name: Deploy with Helm
 on:
   push:
     branches: [ "main" ]
+  pull_request:           # ← этот триггер запускает workflow на PR
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
