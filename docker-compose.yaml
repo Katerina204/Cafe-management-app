@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: cafe_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Almaty111
+    ports:
+      - "5433:5432"
+
+  web:
+    build: .
+    command: ["gunicorn", "cafe_order_management.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "60"]
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+volumes:
+  postgres_data:
