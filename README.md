@@ -110,3 +110,4 @@ Cafe-management-app — Этот проект представляет собо�
 ![Покрытие](/orders/static/orders/coverage.png)
 
 
+#123
