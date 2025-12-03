@@ -109,12 +109,5 @@ Cafe-management-app — Этот проект представляет собо�
 ![Тесты](/orders/static/orders/tests.png)
 ![Покрытие](/orders/static/orders/coverage.png)
 
----
-# Test commit for PR
-# Test Update
-# Test
-#uihgih
-#ufggfhfghfg
-#123
-# Test Update
-# Test Upde
+
+
